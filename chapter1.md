@@ -1,3 +1,6 @@
-# First Chapter
+# Chapter 1
 
-GitBook allows you to organize your book into chapters, each chapter is stored in a separate file like this one.
+This content should be included in Test - Destination Book.
+
+![](/assets/Safe_RGB.png)
+
