@@ -5,9 +5,8 @@ node_js:
 
 os:
   - windows
-  - osx
 
-script:
+before_install:
   -npm install gitbook-cli -g
   -gitbook install
   -gitbook build
