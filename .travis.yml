@@ -25,5 +25,3 @@ deploy:
   local-dir: _book
   upload-dir: test-source-book
   acl: public_read
-  on:
-    repo: samuel-walker/test-source-book
