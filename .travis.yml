@@ -25,6 +25,7 @@ deploy:
   upload-dir: test-source-book
   acl: public_read
   skip_cleanup: true
+  region: "us-east-1"
 
 branches:
   only:
