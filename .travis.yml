@@ -7,9 +7,10 @@ os:
   - windows
   - osx
 
-before_deploy:
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then build.bat; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then build.sh; fi
+script:
+  -npm install gitbook-cli -g
+  -gitbook install
+  -gitbook build
 
 deploy:
   provider: s3
