@@ -18,14 +18,14 @@ script:
 
 deploy:
   provider: s3
-  access_key_id: "AKIAJLEF6XRKWDYLCF2Q"
+  access_key_id: AKIAJLEF6XRKWDYLCF2Q
   secret_access_key: secure
-  bucket: "gitbook-testing"
+  bucket: gitbook-testing
   local_dir: _book
   upload-dir: test-source-book
   acl: public_read
   skip_cleanup: true
-  region: "us-east-1"
+  region: us-east-1
 
 branches:
   only:
