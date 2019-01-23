@@ -1,3 +1,5 @@
+// Tests to make sure gitbook was built to _book directory
+
 function checkBuild(cb) {
   var fs = require('fs');
   const dir = '_book';
