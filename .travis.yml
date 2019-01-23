@@ -5,7 +5,7 @@ node_js:
 os:
 - osx
 install:
-#- npm list gitbook-cli || npm install gitbook-cli
+- npm ci
 - gitbook install
 - gitbook build
 script:
