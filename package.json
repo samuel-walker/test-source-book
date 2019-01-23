@@ -4,6 +4,7 @@
   "description": "This book contains source data in Chapter 1 to be imported into another book.",
   "main": "index.js",
   "dependencies": {
+    "gitbook-cli": "^2.3.2",
     "gitbook-plugin-expandable-chapters-small": "^0.1.7",
     "gitbook-plugin-collapse": "^1.0.5",
     "gitbook-plugin-copy-code-button": "^0.0.2",
