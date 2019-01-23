@@ -26,3 +26,4 @@ deploy:
   local-dir: _book
   upload-dir: test-source-book
   acl: public_read
+  skip_cleanup: true
