@@ -8,8 +8,9 @@ install:
 - npm ci
 - gitbook install
 - gitbook build
-script:
-- echo "skipping test"
+before_script:
+  - npm install -g gulp-cli
+script: gulp
 branches:
   only:
   - master
