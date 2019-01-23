@@ -5,7 +5,7 @@ cache: npm
 os:
 - osx
 install:
-- npm ci
+- npm install -g gitbook-cli
 - gitbook install
 - gitbook build
 before_script:
