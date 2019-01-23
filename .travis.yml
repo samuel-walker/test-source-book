@@ -9,8 +9,8 @@ install:
 - gitbook install
 - gitbook build
 before_script:
-  - npm install -g gulp
-  - npm install -g gulp-cli  
+  - npm install gulp
+  - npm install -g gulp-cli
 script: gulp
 branches:
   only:
