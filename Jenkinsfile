@@ -8,12 +8,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '''
-                    npm install
-                    npm install -g gitbook-cli
-                    gitbook install
-                    gitbook build
-                '''
+                sh './jenkins/scripts/build.sh'
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deploy.sh'
             }
         }
     }
