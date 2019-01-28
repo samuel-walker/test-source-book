@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            label "docker-xsmall"
+            label "docker-small"
             image 'node:alpine'
             args '-p 3000:3000'
         }
@@ -25,7 +25,10 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'gitbook-testing']]) {
                     // Install awscli
-                    sh "pip install awscli --upgrade --user"
+                    sh '''
+                    apt-get install python-pip python-dev build-essential
+                    pip install --upgrade pip
+                    '''
                     // Copy book directory to S3
                     sh "aws s3 cp _book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
                 }
