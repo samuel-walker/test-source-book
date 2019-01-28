@@ -26,7 +26,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'gitbook-testing']]) {
                     // Install awscli
                     sh '''
-                    apt-get install python-pip python-dev build-essential
+                    apt install python-pip python-dev build-essential
                     pip install --upgrade pip
                     '''
                     // Copy book directory to S3
