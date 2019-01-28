@@ -1,12 +1,14 @@
 pipeline {
-    agent {
-        dockerfile {
-            label "docker-small"
-            args '-p 3000:3000'
-        }
-    }
+    agent none
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    label "docker-xsmall"
+                    image 'node:alpine'
+                    args '-p 3000:3000'
+                }
+            }
             steps {
                 // ideally remove config step (different agent?)
                 sh '''
@@ -20,6 +22,13 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent {
+                docker {
+                    label "docker-xsmall"
+                    image 'mesosphere/aws-cli'
+                    args '-p 3000:3000'
+                }
+            }
             steps {
                 withAwsCli(credentialsId: 'gitbook-testing', defaultRegion: 'us-east-1') {
                     // Copy book directory to S3
