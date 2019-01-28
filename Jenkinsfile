@@ -6,7 +6,6 @@ pipeline {
                 docker {
                     label "docker-xsmall"
                     image 'node:alpine'
-                    args '-p 3000:3000'
                 }
             }
             steps {
@@ -25,8 +24,7 @@ pipeline {
             agent {
                 docker {
                     label "docker-xsmall"
-                    image 'mesosphere/aws-cli'
-                    args '-p 3000:3000'
+                    image 'mesosphere/aws-cli:latest'
                 }
             }
             steps {
