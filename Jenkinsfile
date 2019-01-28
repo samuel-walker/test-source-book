@@ -24,6 +24,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'gitbook-testing']]) {
+                    // Install awscli
+                    sh "pip install awscli --upgrade --user"
                     // Copy book directory to S3
                     sh "aws s3 cp _book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
                 }
