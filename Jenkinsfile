@@ -10,10 +10,15 @@ pipeline {
         stage('Build') {
             steps {
                 // sh './jenkins/scripts/build.sh'
-                sh "npm install"
-                sh "npm install -g gitbook-cli"
-                sh "gitbook install"
-                sh "gitbook build"
+                sh '''
+                    npm install
+                    npm config set unsafe-perm true
+                    npm install some_package
+                    npm install -g gitbook-cli
+                    gitbook install
+                    gitbook build
+                    npm config set unsafe-perm false
+                '''.trim()
             }
         }
         stage('Deploy') {
