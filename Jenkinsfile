@@ -1,8 +1,7 @@
 pipeline {
     agent {
-        docker {
+        dockerfile {
             label "docker-small"
-            image 'node:alpine'
             args '-p 3000:3000'
         }
     }
@@ -22,10 +21,6 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'gitbook-testing']]) {
-                //     // Copy book directory to S3
-                //     sh "aws s3 cp _book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
-                // }
                 withAwsCli(credentialsId: 'gitbook-testing', defaultRegion: 'us-east-1') {
                     // Copy book directory to S3
                     sh "aws s3 cp ./_book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
