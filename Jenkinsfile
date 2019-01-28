@@ -9,12 +9,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './jenkins/scripts/build.sh'
+                // sh './jenkins/scripts/build.sh'
+                sh "npm install"
+                sh "npm install -g gitbook-cli"
+                sh "gitbook install"
+                sh "gitbook build"
             }
         }
         stage('Deploy') {
             steps {
-                sh './jenkins/scripts/deploy.sh'
+                // sh './jenkins/scripts/deploy.sh'
+                echo "Deploy here"
             }
         }
     }
