@@ -9,7 +9,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // sh './jenkins/scripts/build.sh'
                 // ideally remove config step (different agent?)
                 sh '''
                     npm install
@@ -24,12 +23,14 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // sh './jenkins/scripts/deploy.sh'
-                echo "Deploy here"
-                withAwsCli(credentialsId: 'gitbook-testing', defaultRegion: 'us-east-1') {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'gitbook-testing']]) {
                     // Copy book directory to S3
-                    sh "aws s3 cp ./_book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive" 
+                    sh "aws s3 cp _book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
                 }
+                // withAwsCli(credentialsId: 'gitbook-testing', defaultRegion: 'us-east-1') {
+                //     // Copy book directory to S3
+                //     sh "aws s3 cp ./_book s3://gitbook-testing.s3-website-us-east-1.amazonaws.com/test-source-book --recursive"
+                // }
             }
         }
     }
