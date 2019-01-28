@@ -25,7 +25,7 @@ pipeline {
                 // Install awscli
                 sh '''
                 wget http://security.ubuntu.com/ubuntu/pool/main/a/apt/apt_1.0.1ubuntu2.19_amd64.deb -O apt.deb
-                pkexec dpkg -i apt.deb
+                sudo dpkg -i apt.deb
                 apt-get install python-pip python-dev build-essential
                 pip install --upgrade pip
                 '''.trim()
