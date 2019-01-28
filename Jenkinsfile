@@ -1,6 +1,7 @@
 pipeline {
     agent {
         docker {
+            label "docker-xsmall"
             image 'node:alpine'
             args '-p 3000:3000'
         }
@@ -11,7 +12,7 @@ pipeline {
                 sh './jenkins/scripts/build.sh'
             }
         }
-        stage('Deliver') {
+        stage('Deploy') {
             steps {
                 sh './jenkins/scripts/deploy.sh'
             }
