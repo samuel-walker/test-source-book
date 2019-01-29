@@ -23,9 +23,10 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    label "docker-xsmall"
+                    // label "docker-xsmall"
                     image 'mesosphere/aws-cli:latest'
-                    args  "--entrypoint='' "
+                    // args  "--entrypoint='' "
+                    reuseNode true
                 }
             }
             steps {
