@@ -13,9 +13,6 @@
     "gitbook-plugin-lightbox": "^1.1.0",
     "gitbook-plugin-splitter": "^0.0.8"
   },
-  "devDependencies": {
-    "gulp": "^4.0.0"
-  },
   "scripts": {
     "test": "echo \"No test specified\""
   },
