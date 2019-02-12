@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                // Update npm dependencies
+                // fetch npm dependencies from package.json
                 sh 'npm install -q'
             }
         }
