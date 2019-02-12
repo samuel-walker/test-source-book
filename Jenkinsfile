@@ -1,53 +1,28 @@
 pipeline {
-    agent none
+    agent {
+        dockerfile {
+            label "docker-xsmall"
+        }
+    }
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    label "docker-xsmall"
-                    image 'nikolaik/python-nodejs'
-                    args '-u root:root'
-                }
-            }
+        stage('Prepare') {
             steps {
-                // install npm, gitbook, build book
-                // ideally  config step should be removed
+                // fetch npm dependencies from package.json
+                sh 'npm install -q'
+            }
+        }
+        stage('Build') {
+            steps {
                 echo "Building GitBook"
-                sh '''
-                    npm install
-                    npm config set unsafe-perm true
-                    npm install -g gitbook-cli
-                    gitbook install
-                    gitbook build
-                    npm config set unsafe-perm false
-                    ls
-                '''.trim()
-                // grab Calibre ebook-convert util and use it to generate pdf
+                sh "gitbook build"
+
                 echo "Generating PDF"
-                sh '''
-                    wget https://s3.amazonaws.com/gitbook-testing/ebook-convert
-                    chmod +x ebook-convert
-                    ls -l ebook-convert
-                    apt-get install sudo
-                    sudo ln -s ebook-convert /usr/bin
-                    gitbook pdf ./ ${env.BRANCH_NAME}.pdf
-                '''.trim()
-                // stash book for use in deploy stage
-                echo "Stashing book"
-                stash includes: '_book/**', name: 'book'
+                sh "gitbook pdf ./ ${env.BRANCH_NAME}.pdf"
+
             }
         }
         stage('Deploy') {
-            agent {
-                docker {
-                    label "docker-xsmall"
-                    image 'nikolaik/python-nodejs'
-                    reuseNode true
-                }
-            }
             steps {
-                echo "Unstashing book"
-                unstash('book')
                 echo "Starting S3 upload"
                 withAwsCli(credentialsId: 'gitbook-testing', defaultRegion: 'us-east-1') {
                     // Copy book directory to S3
