@@ -1,50 +1,37 @@
 pipeline {
-    agent none
+    agent {
+        docker {
+            label "docker-xsmall"
+            image 'nikolaik/python-nodejs'
+        }
+    }
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    label "docker-xsmall"
-                    image 'nikolaik/python-nodejs'
-                    args '-u root:root'
-                }
+        stage('Prepare') {
+            environment {
+                DEBIAN_FRONTEND = noninteractive
             }
             steps {
-                // install npm, gitbook, build book
-                // ideally  config step should be removed
-                echo "Building GitBook"
-                sh '''
-                    npm install
-                    npm config set unsafe-perm true
-                    npm install -g gitbook-cli
-                    gitbook install
-                    gitbook build
-                    npm config set unsafe-perm false
-                    ls
-                '''.trim()
-                // grab Calibre ebook-convert util and use it to generate pdf
-                echo "Generating PDF"
-                sh '''
-                    wget https://s3.amazonaws.com/gitbook-testing/ebook-convert
-                    chmod +x ebook-convert
-                    ls -l ebook-convert
-                    apt-get install sudo
-                    sudo ln -s ebook-convert /usr/bin
-                    gitbook pdf ./ ${env.BRANCH_NAME}.pdf
-                '''.trim()
-                // stash book for use in deploy stage
-                echo "Stashing book"
-                stash includes: '_book/**', name: 'book'
+                // install npm, gitbook, calibre, awscli
+                sh 'apt-get -qq update && apt-get -qq install -y calibre awscli'
+                sh 'npm install'
+                sh 'npm install -g gitbook-cli'
+                sh 'gitbook install'
             }
         }
-        stage('Deploy') {
-            agent {
-                docker {
-                    label "docker-xsmall"
-                    image 'nikolaik/python-nodejs'
-                    reuseNode true
-                }
+        stage('Build') {
+            steps {
+                echo "Building GitBook"
+                sh "gitbook build"
+
+                echo "Generating PDF"
+                sh "gitbook pdf ./ ${env.BRANCH_NAME}.pdf"
+
+                // stash book for use in deploy stage
+                //echo "Stashing book"
+                //stash includes: '_book/**', name: 'book'
             }
+        }
+        /* stage('Deploy') {
             steps {
                 echo "Unstashing book"
                 unstash('book')
@@ -54,6 +41,6 @@ pipeline {
                     sh "aws s3 cp _book s3://gitbook-testing/${env.BRANCH_NAME} --acl public-read --recursive"
                 }
             }
-        }
+        } */
     }
 }
