@@ -7,10 +7,8 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                // install npm, gitbook, calibre, awscli
+                // Update npm dependencies
                 sh 'npm install -q'
-                sh 'npm install -g gitbook-cli'
-                sh 'gitbook install'
             }
         }
         stage('Build') {
