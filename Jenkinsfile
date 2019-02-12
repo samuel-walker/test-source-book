@@ -1,18 +1,13 @@
 pipeline {
     agent {
-        docker {
+        dockerfile {
             label "docker-xsmall"
-            image 'nikolaik/python-nodejs'
         }
     }
     stages {
         stage('Prepare') {
-            environment {
-                DEBIAN_FRONTEND = 'noninteractive'
-            }
             steps {
                 // install npm, gitbook, calibre, awscli
-                sh 'apt-get -qq update && apt-get -qq install -y calibre awscli'
                 sh 'npm install -q'
                 sh 'npm install -g gitbook-cli'
                 sh 'gitbook install'
